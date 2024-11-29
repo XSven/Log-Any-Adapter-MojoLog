@@ -30,13 +30,7 @@ foreach my $method ( Log::Any->logging_methods ) {
         s/critical|alert|emergency/fatal/;
     }
 
-    make_method(
-        $method,
-        sub {
-            my $self = shift;
-            return $self->{logger}->$mojo_method(@_);
-        }
-    );
+    __PACKAGE__->delegate_method_to_slot('logger', $method, $mojo_method);
 }
 
 # Create detection methods: is_debug, is_info, etc.
